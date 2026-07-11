@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Willow & Bloom Dental</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
+
+  :root {
+    --teal-deep: #12433C;
+    --teal-mid: #1F6156;
+    --cream: #FBF7EF;
+    --cream-dim: #F1EADB;
+    --coral: #E8683D;
+    --coral-dark: #C9502A;
+    --ink: #16211E;
+    --line: #DAD0BC;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Manrope', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+  }
+
+  .site {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 5%;
+    border-bottom: 1px solid var(--line);
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--teal-deep);
+    letter-spacing: -0.01em;
+  }
+  .logo span { color: var(--coral); }
+  .navlinks { display: flex; gap: 32px; font-size: 14px; color: var(--teal-deep); font-weight: 600; }
+
+  .hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 6% 5%;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .hero-text { max-width: 520px; }
+  .eyebrow {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--coral-dark); margin-bottom: 14px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.05;
+    color: var(--teal-deep);
+    margin: 0 0 18px 0;
+    font-weight: 600;
+  }
+  .hero-text p {
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: #3C4A46;
+    margin-bottom: 26px;
+  }
+  .cta-row { display: flex; gap: 14px; }
+  .btn-primary {
+    background: var(--coral); color: white; border: none;
+    padding: 13px 24px; border-radius: 8px; font-weight: 700; font-size: 14.5px;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-ghost {
+    background: transparent; color: var(--teal-deep); border: 1.5px solid var(--teal-deep);
+    padding: 13px 24px; border-radius: 8px; font-weight: 700; font-size: 14.5px;
+    cursor: pointer; font-family: inherit;
+  }
+  .hero-art {
+    flex: 1; min-width: 280px; max-width: 420px;
+    aspect-ratio: 1/1;
+    background: linear-gradient(155deg, var(--teal-mid), var(--teal-deep));
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-art::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(232,104,61,0.35), transparent 45%),
+      radial-gradient(circle at 75% 70%, rgba(255,255,255,0.12), transparent 40%);
+  }
+  .tooth-mark {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    color: var(--cream); font-family: 'Fraunces', serif; font-size: 15px; font-style: italic;
+    opacity: 0.85;
+  }
+
+  .strip {
+    display: flex; justify-content: space-around; flex-wrap: wrap; gap: 16px;
+    padding: 28px 5%; background: var(--cream-dim); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .strip div { text-align: center; font-size: 13px; color: var(--teal-deep); font-weight: 700; }
+
+  .chat-launcher {
+    position: fixed; bottom: 26px; right: 26px;
+    width: 62px; height: 62px; border-radius: 50%;
+    background: var(--coral);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+    box-shadow: 0 8px 24px rgba(201,80,42,0.35);
+    z-index: 1000;
+    transition: transform 0.15s ease;
+  }
+  .chat-launcher:hover { transform: scale(1.06); }
+  .chat-launcher svg { width: 26px; height: 26px; }
+
+  .chat-window {
+    position: fixed; bottom: 26px; right: 26px;
+    width: 380px; max-width: 92vw;
+    height: 560px; max-height: 82vh;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(18,67,60,0.28);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1001;
+    border: 1px solid var(--line);
+  }
+  .chat-window.open { display: flex; }
+
+  .chat-head {
+    background: var(--teal-deep);
+    color: var(--cream);
+    padding: 16px 18px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--coral);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px;
+    flex-shrink: 0;
+  }
+  .chat-head-text { flex: 1; }
+  .chat-head-text .name { font-weight: 700; font-size: 14.5px; }
+  .chat-head-text .status { font-size: 12px; opacity: 0.75; display: flex; align-items: center; gap: 5px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #6FE29A; display: inline-block; }
+  .chat-close { background: none; border: none; color: var(--cream); opacity: 0.7; cursor: pointer; font-size: 20px; padding: 4px; }
+  .chat-close:hover { opacity: 1; }
+
+  .chat-body {
+    flex: 1; overflow-y: auto;
+    padding: 18px;
+    background: #FCFAF5;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .msg { max-width: 82%; font-size: 14px; line-height: 1.5; padding: 10px 14px; border-radius: 14px; }
+  .msg.bot { background: var(--cream-dim); color: var(--ink); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .msg.user { background: var(--teal-deep); color: var(--cream); align-self: flex-end; border-bottom-right-radius: 4px; }
+  .msg.typing { background: var(--cream-dim); align-self: flex-start; padding: 12px 16px; }
+  .typing-dots span {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: #8B8478; margin-right: 3px; animation: blink 1.2s infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+
+  .quick-replies {
+    display: flex; flex-wrap: wrap; gap: 8px; padding: 0 18px 12px;
+    background: #FCFAF5;
+  }
+  .qr-btn {
+    background: white; border: 1.3px solid var(--line); color: var(--teal-deep);
+    font-size: 12.5px; font-weight: 600; padding: 7px 12px; border-radius: 20px;
+    cursor: pointer; font-family: inherit;
+  }
+  .qr-btn:hover { border-color: var(--coral); color: var(--coral-dark); }
+
+  .chat-input-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 14px; border-top: 1px solid var(--line); background: white;
+  }
+  .chat-input-row input {
+    flex: 1; border: 1.5px solid var(--line); border-radius: 22px;
+    padding: 11px 16px; font-size: 14px; font-family: inherit; outline: none;
+  }
+  .chat-input-row input:focus { border-color: var(--teal-mid); }
+  .send-btn {
+    width: 40px; height: 40px; border-radius: 50%; background: var(--teal-deep);
+    border: none; display: flex; align-items: center; justify-content: center; cursor: pointer;
+    flex-shrink: 0;
+  }
+  .send-btn:disabled { opacity: 0.4; cursor: default; }
+  .send-btn svg { width: 17px; height: 17px; }
+
+  .badge {
+    position: fixed; top: 18px; left: 18px;
+    background: var(--teal-deep); color: var(--cream);
+    font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 20px;
+    z-index: 999; opacity: 0.9;
+  }
+</style>
+</head>
+<body>
+<div class="badge">PORTFOLIO DEMO — Willow & Bloom Dental (fictional)</div>
+
+<div class="site">
+  <div class="nav">
+    <div class="logo">Willow<span>&</span>Bloom</div>
+    <div class="navlinks">
+      <span>Services</span><span>About</span><span>Contact</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-text">
+      <div class="eyebrow">Family & Cosmetic Dentistry</div>
+      <h1>Care that feels<br>like home.</h1>
+      <p>Gentle, modern dental care in the heart of the city. From routine cleanings to same-day emergencies, our team makes every visit simple.</p>
+      <div class="cta-row">
+        <button class="btn-primary" onclick="openChat()">Chat with us</button>
+        <button class="btn-ghost">Our Services</button>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="tooth-mark">"Book in under a minute — ask our assistant anything."</div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div>⭐ 4.9 patient rating</div>
+    <div>🦷 12 years serving the community</div>
+    <div>📅 Same-day emergency slots</div>
+    <div>💳 Most insurance accepted</div>
+  </div>
+</div>
+
+<button class="chat-launcher" onclick="toggleChat()" id="launcher">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#FBF7EF" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
+
+<div class="chat-window" id="chatWindow">
+  <div class="chat-head">
+    <div class="chat-avatar">W</div>
+    <div class="chat-head-text">
+      <div class="name">Willow & Bloom Assistant</div>
+      <div class="status"><span class="dot"></span> Online now</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="quick-replies" id="quickReplies"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Type your message..." onkeydown="if(event.key==='Enter')sendMessage()">
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#FBF7EF" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+const SYSTEM_PROMPT = `You are the AI front-desk assistant for "Willow & Bloom Dental", a friendly family and cosmetic dental clinic. Stay fully in character and only discuss topics relevant to the clinic. Be warm, concise (2-4 sentences per reply unless listing something), and never invent information outside what's given below. If asked something reasonable about the clinic that isn't explicitly listed, answer sensibly in the spirit of the other facts rather than refusing.
+
+CLINIC OVERVIEW:
+- Name: Willow & Bloom Dental
+- Location: 214 Maple Grove Avenue, Suite 3B
+- Hours: Mon-Fri 8:00am-6:00pm, Sat 9:00am-2:00pm, closed Sundays and major holidays
+- Phone: (555) 014-2290 | Email: hello@willowbloomdental.example
+- Founded 12 years ago; team of 3 dentists (Dr. Amara Okafor - general & cosmetic, Dr. Priya Nair - pediatric, Dr. Sam Whitfield - orthodontics/Invisalign) and 2 hygienists
+- Languages spoken at the clinic: English, Spanish, Yoruba
+- Wheelchair accessible, on the ground floor
+
+SERVICES & PRICING (approximate — always add "final cost depends on your case after an exam"):
+- Checkup + cleaning: $90-$140
+- Deep cleaning (scaling/root planing): $180-$350
+- Fillings: $150-$300 per tooth (composite/white fillings only, no metal fillings offered)
+- Root canal: $700-$1,100 depending on tooth
+- Crowns & bridges: $900-$1,500 per crown
+- Teeth whitening (in-office): $250-$450; take-home kits: $120-$180
+- Invisalign/clear aligners: starting around $3,200, monthly payment plans available
+- Traditional braces: starting around $4,500 (Dr. Whitfield handles consultations)
+- Pediatric dentistry: ages 3+, checkup+cleaning $70-$110
+- Wisdom tooth consultation: $85; extraction quoted after X-ray, typically $200-$500 per tooth (complex cases referred to an oral surgeon)
+- Emergency visit: $120-$180 consultation fee, treatment quoted separately
+- Dentures & partials: consultation required, typically $800-$3,000 depending on type
+- X-rays: usually included in checkups; standalone set $60-$120
+
+INSURANCE & PAYMENT:
+- Accepts most major PPO plans: Delta Dental, Cigna, Aetna, MetLife, Guardian
+- HMO or out-of-network plans: patient should call ahead to confirm coverage, we can also check for them if they give plan name
+- No insurance: self-pay discount of 10% available, plus in-house payment plans for treatments over $500
+- Accepts debit/credit, HSA/FSA cards, and financing through CareCredit
+
+NEW PATIENTS & VISIT INFO:
+- First visit includes exam, X-rays if needed, and a cleaning (unless there's an urgent issue to address first)
+- Recommend arriving 15 minutes early for intake forms, or these can be emailed in advance to save time
+- Bring: photo ID, insurance card (if applicable), list of current medications
+- Average first-visit length: 60-75 minutes; routine follow-up cleanings: 30-45 minutes
+
+POLICIES:
+- Cancellation: at least 24 hours notice or a $35 fee may apply
+- Late arrivals over 15 minutes may need to reschedule depending on the day's schedule
+- Parking: free lot directly behind the building; street parking also available
+- Kids under 12: a parent or guardian must stay in the building during the visit
+- Sedation dentistry (nitrous oxide) available for anxious patients or longer procedures, ask to discuss options
+
+BOOKING FLOW (only trigger this if the user wants to book/schedule an appointment):
+1. Ask which service they'd like (e.g. cleaning, whitening, emergency, consultation, kids visit)
+2. Ask for their preferred day/time
+3. Ask for their name and phone number
+4. Once you have all of this, summarize it back clearly and say: "Your request has been received — our front desk will confirm your exact slot by phone within a few hours. Anything else I can help with?"
+Do not claim to have booked a real slot in a real calendar — you are collecting the request for confirmation, and should be honest about that if asked directly.
+
+RESCHEDULING/CANCELLING: if a patient wants to reschedule or cancel an existing appointment, explain that for security they'll need to confirm this by phone at (555) 014-2290, since the assistant can't look up existing bookings directly. Still be helpful and warm about it.
+
+EMERGENCIES: if someone describes severe pain, swelling, trauma, a knocked-out tooth, or heavy bleeding, tell them to call the clinic directly at (555) 014-2290 right away for same-day care, and that if it's a medical emergency they should go to the nearest ER immediately.
+
+REVIEWS/REPUTATION: if asked, mention the clinic has a 4.9-star patient rating and has served the community for 12 years, and that reviews are visible on the website/Google.
+
+If asked something totally unrelated to the clinic/dentistry (weather, unrelated topics, other businesses), politely redirect: "I'm just the assistant for Willow & Bloom Dental — happy to help with anything about your dental care or appointments here!"
+
+Keep responses natural and human, not robotic or overly formal. Vary your sentence openings so you don't sound scripted.`;
+
+let conversation = [];
+let hasOpened = false;
+
+function toggleChat() {
+  const win = document.getElementById('chatWindow');
+  const isOpen = win.classList.toggle('open');
+  if (isOpen && !hasOpened) {
+    hasOpened = true;
+    addMessage('bot', "Hi there! 👋 I'm the Willow & Bloom Dental assistant. I can help with hours, services, pricing, insurance, or booking an appointment. What can I help you with today?");
+    showQuickReplies(["What are your hours?", "I'd like to book an appointment", "How much is teeth whitening?", "Do you take my insurance?", "I have a dental emergency", "What should I bring as a new patient?"]);
+  }
+}
+function openChat() {
+  const win = document.getElementById('chatWindow');
+  if (!win.classList.contains('open')) toggleChat();
+}
+
+function addMessage(role, text) {
+  const body = document.getElementById('chatBody');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.textContent = text;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTyping() {
+  const body = document.getElementById('chatBody');
+  const div = document.createElement('div');
+  div.className = 'msg typing';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<span class="typing-dots"><span></span><span></span><span></span></span>';
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+function showQuickReplies(options) {
+  const qr = document.getElementById('quickReplies');
+  qr.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'qr-btn';
+    btn.textContent = opt;
+    btn.onclick = () => {
+      qr.innerHTML = '';
+      document.getElementById('chatInput').value = opt;
+      sendMessage();
+    };
+    qr.appendChild(btn);
+  });
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  document.getElementById('quickReplies').innerHTML = '';
+  addMessage('user', text);
+  conversation.push({ role: 'user', content: text });
+  input.value = '';
+  document.getElementById('sendBtn').disabled = true;
+  showTyping();
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system: SYSTEM_PROMPT,
+        messages: conversation
+      })
+    });
+    const data = await response.json();
+    removeTyping();
+    const reply = data.reply || "";
+    addMessage('bot', reply || "Sorry, I didn't quite catch that — could you rephrase?");
+    conversation.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    removeTyping();
+    addMessage('bot', "Sorry, something went wrong on my end. Could you try again?");
+    console.error(err);
+  }
+  document.getElementById('sendBtn').disabled = false;
+}
+</script>
+</body>
+</html>
